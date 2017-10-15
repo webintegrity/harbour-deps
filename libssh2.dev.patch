@@ -1,5 +1,5 @@
 diff --git a/win32/GNUmakefile b/win32/GNUmakefile
-index 8685751..a7ff8f5 100644
+index 8685751..638d724 100644
 --- a/win32/GNUmakefile
 +++ b/win32/GNUmakefile
 @@ -86,11 +86,26 @@ CAT	= type
@@ -35,16 +35,17 @@ index 8685751..a7ff8f5 100644
  CFLAGS	+= -w on,nounused,nounusedexpr # -ansi strict
  else
 -LD	= $(CROSSPREFIX)gcc
-+LIBEXT	= a
-+LD	= $(LIBSSH2_CC)
- RC	= $(CROSSPREFIX)windres
+-RC	= $(CROSSPREFIX)windres
 -LDFLAGS	+= -s -shared -Wl,--output-def,$(TARGET).def,--out-implib,$(TARGET)dll.a
 -AR	= $(CROSSPREFIX)ar
+-ARFLAGS	= -cq
+ LIBEXT	= a
+-RANLIB	= $(CROSSPREFIX)ranlib
++LD	= $(LIBSSH2_CC)
++RC	= $(CROSSPREFIX)windres
 +LDFLAGS	+= -s -shared -Wl,--output-def,$(libssh2_dll_LIBRARY:.dll=.def),--out-implib,$(TARGET)$(LIBSSH2_DLL_A_SUFFIX).$(LIBEXT)
 +AR	= $(LIBSSH2_AR)
- ARFLAGS	= -cq
--LIBEXT	= a
--RANLIB	= $(CROSSPREFIX)ranlib
++ARFLAGS	= cru
 +RANLIB	= $(LIBSSH2_RANLIB)
  RCFLAGS	= -I $(PROOT)/include -O coff
  CFLAGS	+= -fno-builtin
