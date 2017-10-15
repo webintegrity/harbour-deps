@@ -38,23 +38,6 @@ index 577785e62..1389b8539 100644
  RC	= $(CROSSPREFIX)windres
  RCFLAGS	= --include-dir=$(PROOT)/include -DDEBUGBUILD=0 -O COFF
  STRIP	= $(CROSSPREFIX)strip -g
-diff --git a/lib/ldap.c b/lib/ldap.c
-index 040641cf8..89047bcbd 100644
---- a/lib/ldap.c
-+++ b/lib/ldap.c
-@@ -190,9 +190,11 @@ static int ldap_win_bind_auth(LDAP *server, const char *user,
-                               const char *passwd, unsigned long authflags)
- {
-   ULONG method = 0;
--  SEC_WINNT_AUTH_IDENTITY cred = { 0, };
-+  SEC_WINNT_AUTH_IDENTITY cred;
-   int rc = LDAP_AUTH_METHOD_NOT_SUPPORTED;
- 
-+  memset(&cred, 0, sizeof(cred));
-+
- #if defined(USE_SPNEGO)
-   if(authflags & CURLAUTH_NEGOTIATE) {
-     method = LDAP_AUTH_NEGOTIATE;
 diff --git a/src/Makefile.m32 b/src/Makefile.m32
 index e55427a5e..728c814a4 100644
 --- a/src/Makefile.m32
