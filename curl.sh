@@ -80,8 +80,12 @@ _cpu="$2"
     # This breaks pre-7.55.0 builds
     if [ "$(echo "${CURL_VER_}" | cut -c -5)" != '7.55.' ]; then
       options="${options}-winssl"
+
       # Hack to enable SMB/SMBS when OpenSSL is also enabled
-      CURL_CFLAG_EXTRAS="${CURL_CFLAG_EXTRAS} -DUSE_WIN32_CRYPTO"
+      # (not necessary after 7.56.0)
+      if [ "$(echo "${CURL_VER_}" | cut -c -6)" = '7.56.0' ]; then
+        CURL_CFLAG_EXTRAS="${CURL_CFLAG_EXTRAS} -DUSE_WIN32_CRYPTO"
+      fi
     fi
   else
     options="${options}-winssl"
@@ -122,7 +126,8 @@ _cpu="$2"
   export DLL_LIBS='-Wl,-Bstatic -lz -Wl,-Bdynamic'
 
   # Link libssh2 to libcurl in static mode as well.
-  export DLL_LIBS='-Wl,-Bstatic -lssh2 -Wl,-Bdynamic'
+  # Use a hack: Delete the implib
+  rm -f "../libssh2/win32/libssh2.dll.a"
 
   export CROSSPREFIX="${_CCPREFIX}"
 
