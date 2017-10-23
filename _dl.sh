@@ -19,8 +19,8 @@ export LIBRTMP_VER_='2.4+20151223'
 export LIBRTMP_HASH=5c032f5c8cc2937eb55a81a94effdfed3b0a0304b6376147b86f951e225e3ab5
 export LIBSSH2_VER_='1.8.0'
 export LIBSSH2_HASH=39f34e2f6835f4b992cafe8625073a88e5a28ba78f83e8099610a7b3af4676d4
-export CURL_VER_='7.56.0'
-export CURL_HASH=32437bcca0e9434384329fdc733547879d25ba70335b3cf9e3d9cbc3e71fd172
+export CURL_VER_='7.56.1'
+export CURL_HASH=8eed282cf3a0158d567a0feaa3c4619e8e847970597b5a2c81879e8f0d1a39d1
 
 # Quit if any of the lines fail
 set -e
@@ -35,8 +35,8 @@ esac
 
 # Install required component
 # TODO: add `--progress-bar off` when pip 9.1.0 hits the drives
-python -m pip --disable-pip-version-check install --upgrade pip
-python -m pip install pefile
+pip --disable-pip-version-check install --user --upgrade pip
+pip install --user pefile
 
 alias curl='curl -fsS --connect-timeout 15 --retry 3'
 alias gpg='gpg --batch --keyserver-options timeout=15 --keyid-format LONG'
@@ -179,7 +179,7 @@ rm -f -r libssh2 && mv libssh2-* libssh2
 
 # curl
 if [ "${_BRANCH#*dev*}" != "${_BRANCH}" ]; then
-  CURL_VER_='7.57.0-dev'
+  CURL_VER_='7.56.1-dev'
   curl -o pack.bin -L --proto-redir =https https://github.com/curl/curl/archive/4440b6ad575385b433dc4b8a28ef80000aa95f7f.tar.gz || exit 1
 else
   curl \
