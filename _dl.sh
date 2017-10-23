@@ -33,10 +33,13 @@ case "$(uname)" in
   *BSD)    os='bsd';;
 esac
 
+unset _py
+[ "${os}" = 'win' ] && _py='python -m'
+
 # Install required component
 # TODO: add `--progress-bar off` when pip 9.1.0 hits the drives
-pip --disable-pip-version-check install --user --upgrade pip
-pip install --user pefile
+${_py} pip --disable-pip-version-check install --user --upgrade pip
+${_py} pip install --user pefile
 
 alias curl='curl -fsS --connect-timeout 15 --retry 3'
 alias gpg='gpg --batch --keyserver-options timeout=15 --keyid-format LONG'
