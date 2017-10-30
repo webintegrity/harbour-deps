@@ -35,7 +35,8 @@ matrix:
 before_install:
   - |
     if [ "$TRAVIS_OS_NAME" = 'osx' ]; then
-      travis_retry brew install p7zip mingw-w64 llvm jq osslsigncode dos2unix gpg gnu-sed || true
+      [ "${CC}" = 'mingw32-clang' ] && _clang='llvm'
+      travis_retry brew install p7zip mingw-w64 ${_clang} jq osslsigncode dos2unix gpg gnu-sed || true
       travis_retry brew install --force-bottle --build-bottle wine || true
     elif [ "$TRAVIS_OS_NAME" = 'linux' ]; then
       time docker pull "${DOCKER_IMAGE}"
@@ -45,11 +46,13 @@ before_install:
         cat /etc/*-release
         ulimit -a
         df -h
+        [ "${CC}" = 'mingw32-clang' ] && _clang='clang'
         dpkg --add-architecture i386
         apt-get -qq update
         apt-get -qq install \
           curl git make python python-pip \
-          binutils-mingw-w64 gcc-mingw-w64 clang p7zip-full jq dos2unix realpath osslsigncode wine-stable wine64 wine32
+          binutils-mingw-w64 gcc-mingw-w64 ${_clang} \
+          p7zip-full jq dos2unix realpath osslsigncode wine-stable wine64 wine32
         ./_build.sh'
     fi
 
