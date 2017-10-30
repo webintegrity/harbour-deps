@@ -19,6 +19,7 @@ _cpu="$2"
   # Prepare build
 
   find . -name '*.dll' -type f -delete
+  find . -name '*.def' -type f -delete
 
   # FIXME: This will not create a fully release-compliant file tree,
   #        f.e. documentation will be incomplete.
@@ -131,6 +132,8 @@ _cpu="$2"
   # Download CA bundle
   [ -f '../ca-bundle.crt' ] || \
     curl -R -fsS -o '../ca-bundle.crt' 'https://curl.haxx.se/ca/cacert.pem'
+
+  openssl dgst -sha256 '../ca-bundle.crt'
 
   # Make steps for determinism
 

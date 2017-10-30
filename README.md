@@ -1,4 +1,5 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.txt)
+[![Build Status](https://api.travis-ci.org/vszakats/harbour-deps.svg?branch=master)](https://travis-ci.org/vszakats/harbour-deps)
 [![Build status](https://ci.appveyor.com/api/projects/status/4bx4006pge6jbqch/branch/master?svg=true)](https://ci.appveyor.com/project/vsz/harbour-deps/branch/master)
 &nbsp;&nbsp;&nbsp;&nbsp;
 [![PayPal Donate](https://img.shields.io/badge/PayPal-Donate_Now-f8981d.svg?colorA=00457c)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2DZM6WAGRJWT6 "Donate Now")
@@ -32,14 +33,14 @@
     configuration, sometimes thus breaking reproducibility. This trade-off was
     decided to be tolerable for more ideal binaries and allowing this project
     to automatically benefit from continuous C compiler updates.
-  - Generated binaries are GPG signed with Bintray's [key pair](https://bintray.com/docs/usermanual/uploads/uploads_gpgsigning.html):
+  - Generated binaries are GPG signed with Bintray's [key pair](https://bintray.com/docs/usermanual/uploads/uploads_managinguploadedcontent.html#_signing_with_the_bintray_key):
     **[8756 C4F7 65C9 AC3C B6B8  5D62 379C E192 D401 AB61](https://pgp.mit.edu/pks/lookup?op=vindex&fingerprint=on&search=0x8756C4F765C9AC3CB6B85D62379CE192D401AB61)**
   - Patching policy: No locally maintained patches. Patches are only
     applied locally if already merged upstream or &mdash; in case it's
     necessary for a successful build &mdash; had them submitted upstream
     with fair confidence of getting accepted.
-  - curl/libcurl 7.56.0 and upper versions are built in MultiSSL mode, with
-    both OpenSSL and [WinSSL](https://en.wikipedia.org/wiki/Cryptographic_Service_Provider)
+  - curl/libcurl are built in MultiSSL mode, with both OpenSSL and
+    [WinSSL](https://en.wikipedia.org/wiki/Cryptographic_Service_Provider)
     available as SSL backends.
   - Optional support for [C-ares](https://c-ares.haxx.se/), [librtmp](https://rtmpdump.mplayerhq.hu/).
   - Generated binaries are uploaded to [VirusTotal](https://www.virustotal.com/).
@@ -75,11 +76,11 @@
 
 # Binary package downloads
 
-  * curl: <https://bintray.com/vszakats/generic/curl>
-  * OpenSSL: <https://bintray.com/vszakats/generic/openssl>
-  * libssh2: <https://bintray.com/vszakats/generic/libssh2>
-  * nghttp2: <https://bintray.com/vszakats/generic/nghttp2>
-  * zlib: <https://bintray.com/vszakats/generic/zlib>
+  * curl: <https://bintray.com/vszakats/generic/curl/_latestVersion>
+  * OpenSSL: <https://bintray.com/vszakats/generic/openssl/_latestVersion>
+  * libssh2: <https://bintray.com/vszakats/generic/libssh2/_latestVersion>
+  * nghttp2: <https://bintray.com/vszakats/generic/nghttp2/_latestVersion>
+  * zlib: <https://bintray.com/vszakats/generic/zlib/_latestVersion>
 
 # Live build logs
 
@@ -102,5 +103,5 @@
   project.
 
 ---
-This document &copy;&nbsp;2014&ndash;present Viktor Szakats <https://vszakats.net/><br />
+This document &copy;&nbsp;2014&ndash;present [Viktor Szakats](https://vszakats.net/)<br>
 [![Creative Commons Attribution-ShareAlike 4.0](https://mirrors.creativecommons.org/presskit/buttons/80x15/svg/by-sa.svg)](https://creativecommons.org/licenses/by-sa/4.0/)

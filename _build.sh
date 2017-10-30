@@ -54,7 +54,8 @@ esac
 
 _ori_path="${PATH}"
 
-for _cpu in '32' '64'; do
+build_single_target() {
+  _cpu="$1"
 
   export _CCPREFIX=
   export _MAKE='make'
@@ -84,7 +85,8 @@ for _cpu in '32' '64'; do
     export _WINE='wine'
   fi
 
-  export _CCVER="$("${_CCPREFIX}gcc" -dumpversion | sed -e 's/\<[0-9]\>/0&/g' -e 's/\.//g' | cut -c -2)"
+  export _CCVER
+  _CCVER="$("${_CCPREFIX}gcc" -dumpversion | sed -e 's/\<[0-9]\>/0&/g' -e 's/\.//g' | cut -c -2)"
 
   which osslsigncode > /dev/null 2>&1 || unset CODESIGN_KEY
 
@@ -97,7 +99,14 @@ for _cpu in '32' '64'; do
   ./librtmp.sh   "${LIBRTMP_VER_}" "${_cpu}"
   ./libssh2.sh   "${LIBSSH2_VER_}" "${_cpu}"
   ./curl.sh         "${CURL_VER_}" "${_cpu}"
-done
+}
+
+if [ -n "$CPU" ]; then
+  build_single_target "${CPU}"
+else
+  build_single_target 64
+  build_single_target 32
+fi
 
 ls -l ./*-*-mingw*.*
 cat hashes.txt
