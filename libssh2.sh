@@ -54,7 +54,7 @@ _cpu="$2"
 
   export CROSSPREFIX="${_CCPREFIX}"
 
-  if [ -n "${MY_USE_CLANG}" ]; then
+  if [ "${CC}" = 'mingw32-clang' ]; then
     export LIBSSH2_CC=clang
     if [ "${os}" != 'win' ]; then
       LIBSSH2_CFLAG_EXTRAS="-target ${_TRIPLET} --sysroot ${_SYSROOT} ${LIBSSH2_CFLAG_EXTRAS}"

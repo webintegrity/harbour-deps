@@ -80,7 +80,7 @@ build_single_target() {
     export PATH="${tmp}:${_ori_path}"
     export _MAKE='mingw32-make'
   else
-    if [ -n "${MY_USE_CLANG}" ] && [ "${os}" = 'mac' ]; then
+    if [ "${CC}" = 'mingw32-clang' ] && [ "${os}" = 'mac' ]; then
       export PATH="/usr/local/opt/llvm/bin:${_ori_path}"
     fi
     # Prefixes don't work with MSYS2/mingw-w64, because `ar`, `nm` and
@@ -101,7 +101,7 @@ build_single_target() {
   fi
 
   export _CCVER
-  if [ -n "${MY_USE_CLANG}" ]; then
+  if [ "${CC}" = 'mingw32-clang' ]; then
     _CCVER='99'
   else
     _CCVER="$("${_CCPREFIX}gcc" -dumpversion | sed -e 's/\<[0-9]\>/0&/g' -e 's/\.//g' | cut -c -2)"
