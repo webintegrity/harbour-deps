@@ -80,6 +80,9 @@ build_single_target() {
     export PATH="${tmp}:${_ori_path}"
     export _MAKE='mingw32-make'
   else
+    if [ -n "${MY_USE_CLANG}" ] && [ "${os}" = 'mac' ]; then
+      export PATH="/usr/local/opt/llvm/bin:${_ori_path}"
+    fi
     # Prefixes don't work with MSYS2/mingw-w64, because `ar`, `nm` and
     # `runlib` are missing from them. They are accessible either _without_
     # one, or as prefix + `gcc-ar`, `gcc-nm`, `gcc-runlib`.
