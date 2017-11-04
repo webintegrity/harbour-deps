@@ -80,25 +80,28 @@ build_single_target() {
     export PATH="${tmp}:${_ori_path}"
     export _MAKE='mingw32-make'
   else
+    if [ "${CC}" = 'mingw-clang' ] && [ "${os}" = 'mac' ]; then
+      export PATH="/usr/local/opt/llvm/bin:${_ori_path}"
+    fi
+    [ "${_cpu}" = '32' ] && _machine='i686'
+    [ "${_cpu}" = '64' ] && _machine='x86_64'
+    _TRIPLET="${_machine}-w64-mingw32"
     # Prefixes don't work with MSYS2/mingw-w64, because `ar`, `nm` and
     # `runlib` are missing from them. They are accessible either _without_
     # one, or as prefix + `gcc-ar`, `gcc-nm`, `gcc-runlib`.
-    [ "${_cpu}" = '32' ] && _TRIPLET='i686-w64-mingw32'
-    [ "${_cpu}" = '64' ] && _TRIPLET='x86_64-w64-mingw32'
     _CCPREFIX="${_TRIPLET}-"
     # mingw-w64 sysroots
     if [ "${os}" = 'mac' ]; then
-      [ "${_cpu}" = '32' ] && _SYSROOT='/usr/local/opt/mingw-w64/toolchain-i686'
-      [ "${_cpu}" = '64' ] && _SYSROOT='/usr/local/opt/mingw-w64/toolchain-x86_64'
+      _SYSROOT="/usr/local/opt/mingw-w64/toolchain-${_machine}"
     else
-      [ "${_cpu}" = '32' ] && _SYSROOT="/usr/${_TRIPLET}"
-      [ "${_cpu}" = '64' ] && _SYSROOT="/usr/${_TRIPLET}"
+      _SYSROOT="/usr/${_TRIPLET}"
     fi
     export _WINE='wine'
   fi
 
   export _CCVER
-  if [ -n "${MY_USE_CLANG}" ]; then
+  if [ "${CC}" = 'mingw-clang' ]; then
+    # We don't use old mingw toolchain versions when building with clang, so this is safe:
     _CCVER='99'
   else
     _CCVER="$("${_CCPREFIX}gcc" -dumpversion | sed -e 's/\<[0-9]\>/0&/g' -e 's/\.//g' | cut -c -2)"
