@@ -38,8 +38,9 @@ _cpu="$2"
   export CXXFLAGS="${_CFLAGS}"
 
   cmake . \
-    -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DCMAKE_INSTALL_LIBDIR=lib
+    -DCMAKE_SYSTEM_NAME='Windows' \
+    -DCMAKE_INSTALL_PREFIX='/usr/local' \
+    -DCMAKE_INSTALL_LIBDIR='lib'
   make
   make install "DESTDIR=$(pwd)/pkg" > /dev/null
 
