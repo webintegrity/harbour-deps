@@ -11,7 +11,7 @@ language: c
 
 addons:
   apt:
-    packages: [ binutils-mingw-w64, gcc-mingw-w64, p7zip-full, gnupg-curl, dos2unix, realpath ]
+    packages: [ binutils-mingw-w64, gcc-mingw-w64, cmake, p7zip-full, gnupg-curl, dos2unix, realpath ]
 
 matrix:
   include:
@@ -24,11 +24,11 @@ matrix:
       # https://hub.docker.com/_/ubuntu/
       env: DOCKER_IMAGE=ubuntu:rolling
     - os: osx
-      osx_image: xcode9
+      osx_image: &mac-image xcode9.1
       compiler: mingw-clang
       env: CPU=64
     - os: osx
-      osx_image: xcode9
+      osx_image: *mac-image
       compiler: mingw-clang
       env: CPU=32
 
@@ -36,8 +36,12 @@ before_install:
   - |
     if [ "$TRAVIS_OS_NAME" = 'osx' ]; then
       [ "${CC}" = 'mingw-clang' ] && _clang='llvm'
-      travis_retry brew install p7zip mingw-w64 ${_clang} jq osslsigncode dos2unix gpg gnu-sed || true
-      travis_retry brew install --force-bottle --build-bottle wine || true
+      export HOMEBREW_NO_AUTO_UPDATE=1
+      travis_retry brew update > /dev/null
+      travis_retry brew upgrade
+      travis_retry brew install p7zip mingw-w64 ${_clang} jq osslsigncode dos2unix gpg gnu-sed
+      travis_retry brew install --force-bottle --build-bottle wine
+      wineboot --init
     elif [ "$TRAVIS_OS_NAME" = 'linux' ]; then
       time docker pull "${DOCKER_IMAGE}"
       time docker run -it -v "${PWD}:${PWD}" -w "${PWD}" \
@@ -51,7 +55,7 @@ before_install:
         apt-get -qq update
         apt-get -qq install \
           curl git make python python-pip \
-          binutils-mingw-w64 gcc-mingw-w64 ${_clang} \
+          binutils-mingw-w64 gcc-mingw-w64 ${_clang} cmake \
           p7zip-full jq dos2unix realpath osslsigncode wine-stable wine64 wine32
         ./_build.sh'
     fi
