@@ -26,7 +26,9 @@ _cpu="$2"
     *BSD)    os='bsd';;
   esac
 
-  [ "${os}" != 'win' ] && export CMAKE_SYSTEM_NAME=${_TRIPLET}
+  if [ "${os}" != 'win' ]; then
+    export CMAKE_SYSTEM_NAME=${_TRIPLET}
+  fi
 
   # Build
 
@@ -39,12 +41,11 @@ _cpu="$2"
   find . -name '*.pc'  -type f -delete
 
   export CMAKE_C_COMPILER="${_CCPREFIX}gcc"
+  export CC="${CMAKE_C_COMPILER}"
   export LDFLAGS="-static-libgcc -m${_cpu}"
   export CFLAGS="${LDFLAGS} -fno-ident"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && CFLAGS="${CFLAGS} -fno-asynchronous-unwind-tables"
   export CXXFLAGS="${CFLAGS}"
-
-  unset CC
 
   # shellcheck disable=SC2086
   cmake . ${options} \
