@@ -73,6 +73,7 @@ _cpu="$2"
   if [ -d ../brotli ]; then
     options="${options}-brotli"
     export BROTLI_PATH=../../brotli/pkg/usr/local
+    export BROTLI_LIBS='-Wl,-Bstatic -lbrotlicommon -lbrotlienc -Wl,-Bdynamic'
   fi
 
   [ -d ../libressl ] && export OPENSSL_PATH=../../libressl
@@ -124,10 +125,9 @@ _cpu="$2"
   # along with `libz.a` causing the linker to pick up the shared library.
   export DLL_LIBS='-Wl,-Bstatic -lz -Wl,-Bdynamic'
 
-  # Link libssh2 and brotli to libcurl in static mode as well.
+  # Link libssh2 to libcurl in static mode as well.
   # Use a hack: Delete the implib
   rm -f "../libssh2/win32/libssh2.dll.a"
-  rm -f "../brotli/pkg/usr/local/lib/libbrotlidec.dll.a"
 
   export CROSSPREFIX="${_CCPREFIX}"
 

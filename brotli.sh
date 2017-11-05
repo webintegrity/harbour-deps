@@ -16,6 +16,18 @@ _cpu="$2"
 (
   cd "${_NAM}" || exit
 
+  # Cross-tasks
+
+  # Detect host OS
+  case "$(uname)" in
+    *_NT*)   os='win';;
+    Linux*)  os='linux';;
+    Darwin*) os='mac';;
+    *BSD)    os='bsd';;
+  esac
+
+  [ "${os}" != 'win' ] && export CMAKE_SYSTEM_NAME='Windows'
+
   # Build
 
   rm -fr CMakeFiles
@@ -33,9 +45,6 @@ _cpu="$2"
 
   _CFLAGS="-static-libgcc -m${_cpu} -fno-ident -DMINGW_HAS_SECURE_API"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && _CFLAGS="${_CFLAGS} -fno-asynchronous-unwind-tables"
-
-# export CFLAGS="${_CFLAGS}"
-# export CXXFLAGS="${_CFLAGS}"
 
   cmake . \
     -DCMAKE_C_COMPILER="${_CCPREFIX}gcc" \
