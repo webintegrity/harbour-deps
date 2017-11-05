@@ -72,7 +72,7 @@ _cpu="$2"
   options="${options}-zlib"
   if [ -d ../brotli ]; then
     options="${options}-brotli"
-    export BROTLI_PATH=../../brotli
+    export BROTLI_PATH=../../brotli/pkg/usr/local
   fi
 
   [ -d ../libressl ] && export OPENSSL_PATH=../../libressl
@@ -127,7 +127,7 @@ _cpu="$2"
   # Link libssh2 and brotli to libcurl in static mode as well.
   # Use a hack: Delete the implib
   rm -f "../libssh2/win32/libssh2.dll.a"
-  rm -f "../brotli/lib/libbrotlidec.dll.a"
+  rm -f "../brotli/pkg/usr/local/lib/libbrotlidec.dll.a"
 
   export CROSSPREFIX="${_CCPREFIX}"
 
