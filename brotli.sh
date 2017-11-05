@@ -34,11 +34,13 @@ _cpu="$2"
   _CFLAGS="-static-libgcc -m${_cpu} -fno-ident -DMINGW_HAS_SECURE_API"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && _CFLAGS="${_CFLAGS} -fno-asynchronous-unwind-tables"
 
-  export CFLAGS="${_CFLAGS}"
-  export CXXFLAGS="${_CFLAGS}"
+# export CFLAGS="${_CFLAGS}"
+# export CXXFLAGS="${_CFLAGS}"
 
   cmake . \
-    -DCMAKE_SYSTEM_NAME='Windows' \
+    -DCMAKE_C_COMPILER="${_CCPREFIX}gcc" \
+    -DCMAKE_CXX_COMPILER="${_CCPREFIX}g++" \
+    -DCMAKE_C_FLAGS="${_CFLAGS}" \
     -DCMAKE_INSTALL_PREFIX='/usr/local' \
     -DCMAKE_INSTALL_LIBDIR='lib'
   make
