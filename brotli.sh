@@ -40,8 +40,8 @@ _cpu="$2"
   find . -name '*.Plo' -type f -delete
   find . -name '*.pc'  -type f -delete
 
-  export CMAKE_C_COMPILER="${_CCPREFIX}gcc"
-  export CC="${CMAKE_C_COMPILER}"
+  export CC="${_CCPREFIX}gcc"
+  export CXX="${_CCPREFIX}gcc"
   export LDFLAGS="-static-libgcc -m${_cpu}"
   export CFLAGS="${LDFLAGS} -fno-ident"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && CFLAGS="${CFLAGS} -fno-asynchronous-unwind-tables"
