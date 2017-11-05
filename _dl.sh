@@ -93,7 +93,7 @@ rm -f -r brotli && mv brotli-* brotli
 # curl
 if [ "${_BRANCH#*dev*}" != "${_BRANCH}" ]; then
   CURL_VER_='7.57.0-dev'
-  curl -o pack.bin -L --proto-redir =https https://github.com/curl/curl/archive/c675c40295045d4988eeb6291c54eb48f138822f.tar.gz || exit 1
+  curl -o pack.bin -L --proto-redir =https https://github.com/curl/curl/archive/cc1f4436099decb9d1a7034b2bb773a9f8379d31.tar.gz || exit 1
 else
   curl \
     -o pack.bin "https://curl.haxx.se/download/curl-${CURL_VER_}.tar.xz" \

@@ -73,7 +73,7 @@ _cpu="$2"
   if [ -d ../brotli ]; then
     options="${options}-brotli"
     export BROTLI_PATH=../../brotli/pkg/usr/local
-    export BROTLI_LIBS='-Wl,-Bstatic -lbrotlidec -lbrotlicommon -Wl,-Bdynamic'
+    export BROTLI_LIBS='-Wl,-Bstatic -lbrotlidec-static -lbrotlicommon-static -Wl,-Bdynamic'
   fi
 
   [ -d ../libressl ] && export OPENSSL_PATH=../../libressl
