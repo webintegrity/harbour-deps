@@ -39,6 +39,7 @@ _cpu="$2"
     -DCMAKE_C_COMPILER="${_CCPREFIX}gcc" \
     -DCMAKE_CXX_COMPILER="${_CCPREFIX}g++" \
     -DCMAKE_C_FLAGS="${_CFLAGS}" \
+    -DCXXFLAGS="${_CFLAGS}" \
     -DCMAKE_INSTALL_PREFIX='/usr/local' \
     -DCMAKE_INSTALL_LIBDIR='lib'
   make
