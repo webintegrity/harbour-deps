@@ -26,7 +26,8 @@ _cpu="$2"
     *BSD)    os='bsd';;
   esac
 
-  [ "${os}" != 'win' ] && export CMAKE_SYSTEM_NAME='Windows'
+  options=''
+  [ "${os}" != 'win' ] && options="${options} CMAKE_SYSTEM_NAME=Windows"
 
   # Build
 
@@ -46,7 +47,8 @@ _cpu="$2"
   _CFLAGS="-static-libgcc -m${_cpu} -fno-ident -DMINGW_HAS_SECURE_API"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && _CFLAGS="${_CFLAGS} -fno-asynchronous-unwind-tables"
 
-  cmake . \
+  # shellcheck disable=SC2086
+  cmake . ${options} \
     -DCMAKE_C_COMPILER="${_CCPREFIX}gcc" \
     -DCMAKE_CXX_COMPILER="${_CCPREFIX}g++" \
     -DCMAKE_C_FLAGS="${_CFLAGS}" \
