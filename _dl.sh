@@ -131,37 +131,6 @@ if [ "${_BRANCH#*cares*}" != "${_BRANCH}" ]; then
   [ -f "c-ares${_patsuf}.patch" ] && dos2unix < "c-ares${_patsuf}.patch" | patch -N -p1 -d c-ares
 fi
 
-if [ "${_BRANCH#*libressl*}" != "${_BRANCH}" ]; then
-  # libressl
-  curl \
-    -o pack.bin "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${LIBRESSL_VER_}.tar.gz" \
-    -o pack.sig "https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-${LIBRESSL_VER_}.tar.gz.asc" || exit 1
-  gpg_recv_keys A1EB079B8D3EB92B4EBD3139663AF51BD5E4D8D5
-  gpg --verify-options show-primary-uid-only --verify pack.sig pack.bin || exit 1
-  openssl dgst -sha256 pack.bin | grep -q "${LIBRESSL_HASH}" || exit 1
-  tar -xvf pack.bin > /dev/null 2>&1 || exit 1
-  rm pack.bin
-  rm -f -r libressl && mv libressl-* libressl
-else
-  # openssl
-  if [ "${_BRANCH#*dev*}" != "${_BRANCH}" ]; then
-    OPENSSL_VER_='1.1.1-dev'
-    curl -o pack.bin -L --proto-redir =https https://github.com/openssl/openssl/archive/master.tar.gz || exit 1
-  else
-    curl \
-      -o pack.bin "https://www.openssl.org/source/openssl-${OPENSSL_VER_}.tar.gz" \
-      -o pack.sig "https://www.openssl.org/source/openssl-${OPENSSL_VER_}.tar.gz.asc" || exit 1
-    # From https://www.openssl.org/community/team.html
-    gpg_recv_keys 8657ABB260F056B1E5190839D9C4D26D0E604491
-    gpg --verify-options show-primary-uid-only --verify pack.sig pack.bin || exit 1
-    openssl dgst -sha256 pack.bin | grep -q "${OPENSSL_HASH}" || exit 1
-  fi
-  tar -xvf pack.bin > /dev/null 2>&1 || exit 1
-  rm pack.bin
-  rm -f -r openssl && mv openssl-* openssl
-  [ -f "openssl${_patsuf}.patch" ] && dos2unix < "openssl${_patsuf}.patch" | patch -N -p1 -d openssl
-fi
-
 # Do not include this by default to avoid an unnecessary libcurl dependency
 # and potential licensing issues.
 if [ "${_BRANCH#*librtmp*}" != "${_BRANCH}" ]; then
@@ -172,23 +141,6 @@ if [ "${_BRANCH#*librtmp*}" != "${_BRANCH}" ]; then
   rm pack.bin
   rm -f -r librtmp && mv rtmpdump-* librtmp
 fi
-
-# libssh2
-if [ "${_BRANCH#*dev*}" != "${_BRANCH}" ]; then
-  LIBSSH2_VER_='1.8.1-dev2'
-  curl -o pack.bin -L --proto-redir =https https://github.com/libssh2/libssh2/archive/1d0e694d7d02f19a303bcf1eac18a5bea818f6db.tar.gz || exit 1
-else
-  curl \
-    -o pack.bin -L --proto-redir =https "https://libssh2.org/download/libssh2-${LIBSSH2_VER_}.tar.gz" \
-    -o pack.sig -L --proto-redir =https "https://libssh2.org/download/libssh2-${LIBSSH2_VER_}.tar.gz.asc" || exit 1
-  gpg_recv_keys 27EDEAF22F3ABCEB50DB9A125CC908FDB71E12C2
-  gpg --verify-options show-primary-uid-only --verify pack.sig pack.bin || exit 1
-  openssl dgst -sha256 pack.bin | grep -q "${LIBSSH2_HASH}" || exit 1
-fi
-tar -xvf pack.bin > /dev/null 2>&1 || exit 1
-rm pack.bin
-rm -f -r libssh2 && mv libssh2-* libssh2
-[ -f "libssh2${_patsuf}.patch" ] && dos2unix < "libssh2${_patsuf}.patch" | patch -N -p1 -d libssh2
 
 # curl
 if [ "${_BRANCH#*dev*}" != "${_BRANCH}" ]; then

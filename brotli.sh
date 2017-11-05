@@ -36,8 +36,8 @@ _cpu="$2"
 
   cmake . \
     -DCMAKE_SYSTEM_NAME='Windows' \
-    -DCMAKE_C_COMPILER="${_TRIPLET}-gcc" \
-    -DCMAKE_CXX_COMPILER="${_TRIPLET}-g++" \
+    -DCMAKE_C_COMPILER="${_CCPREFIX}gcc" \
+    -DCMAKE_CXX_COMPILER="${_CCPREFIX}g++" \
     -DCMAKE_C_FLAGS="${_CFLAGS}" \
     -DCMAKE_INSTALL_PREFIX='/usr/local' \
     -DCMAKE_INSTALL_LIBDIR='lib'
@@ -46,6 +46,8 @@ _cpu="$2"
 
   # DESTDIR= + CMAKE_INSTALL_PREFIX
   _pkg='pkg/usr/local'
+
+  ls -lA -R "${_pkg}"
 
   # Remove '-static' suffixes from static lib names to make these behave
   # like other most other projects do.
