@@ -27,7 +27,7 @@ _cpu="$2"
   esac
 
   options=''
-  [ "${os}" != 'win' ] && options="${options} CMAKE_SYSTEM_NAME=Windows"
+  [ "${os}" != 'win' ] && options="${options} -DCMAKE_SYSTEM_NAME=Windows"
 
   # Build
 
