@@ -60,7 +60,7 @@ _cpu="$2"
   export CFLAGS="${LDFLAGS} -fno-ident -U__STRICT_ANSI__ -DNGHTTP2_STATICLIB"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && CFLAGS="${CFLAGS} -fno-asynchronous-unwind-tables"
 
-  if [ "${CC}" = 'mingw-clang' ]; then
+  if [ "${CC}" = '__mingw-clang' ]; then
     export CC=clang
     if [ "${os}" != 'win' ]; then
       CFLAGS="-target ${_TRIPLET} --sysroot ${_SYSROOT} ${CFLAGS}"
