@@ -27,16 +27,11 @@ _cpu="$2"
   esac
 
   options=''
-  if [ "${os}" != 'win' ]; then
-    options="${options} -DCMAKE_SYSTEM_NAME=Windows"
-    options="${options} -DCMAKE_C_COMPILER=${_CCPREFIX}gcc"
-    options="${options} -DCMAKE_CXX_COMPILER=${_CCPREFIX}g++"
-  fi
+  [ "${os}" != 'win' ] && options="${options} -DCMAKE_SYSTEM_NAME=Windows"
 
   # Build
 
-  rm -fr CMakeFiles
-  rm -f CMakeCache.txt
+  rm -fr CMakeFiles CMakeCache.txt cmake_install.cmake
 
   find . -name '*.o'   -type f -delete
   find . -name '*.a'   -type f -delete
@@ -48,28 +43,29 @@ _cpu="$2"
 
   unset CC
 
-  _CFLAGS="-m${_cpu} -fno-ident -DMINGW_HAS_SECURE_API"
+  _CFLAGS="-static-libgcc -m${_cpu} -fno-ident -DMINGW_HAS_SECURE_API"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && _CFLAGS="${_CFLAGS} -fno-asynchronous-unwind-tables"
-
-  export CFLAGS="-static-libgcc ${_CFLAGS}"
-  export CXXFLAGS="${_CFLAGS}"
 
   # shellcheck disable=SC2086
   cmake . ${options} \
     -DCMAKE_SHARED_LIBRARY_PREFIX= \
     -DCMAKE_SHARED_LIBRARY_SUFFIX= \
-    -DCMAKE_INSTALL_PREFIX='/usr/local' \
-    -DCMAKE_INSTALL_LIBDIR='lib'
+    "-DCMAKE_C_COMPILER=${_CCPREFIX}gcc" \
+    "-DCMAKE_CXX_COMPILER=${_CCPREFIX}g++" \
+    "-DCMAKE_C_FLAGS=${_CFLAGS}" \
+    '-DCMAKE_INSTALL_PREFIX=/usr/local'
   make
   make install "DESTDIR=$(pwd)/pkg" > /dev/null
 
   # DESTDIR= + CMAKE_INSTALL_PREFIX
   _pkg='pkg/usr/local'
 
+  ls -lA -R "${_pkg}"
+
   # Remove '-static' suffixes from static lib names to make these behave
   # like other most other projects do.
 
-# for fn in ${_pkg}/lib/*-static.a; do mv "${fn}" "$(echo "${fn}" | sed 's|-static||')"; done
+  for fn in ${_pkg}/lib/*-static.a; do mv "${fn}" "$(echo "${fn}" | sed 's|-static||')"; done
 
   # Make steps for determinism
 
