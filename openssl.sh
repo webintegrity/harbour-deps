@@ -64,7 +64,6 @@ _cpu="$2"
 
   # shellcheck disable=SC2086
   ./Configure ${options} shared \
-    "--cross-compile-prefix=${_CCPREFIX}" \
     -fno-ident \
     -Wl,--nxcompat -Wl,--dynamicbase \
     no-unit-test \
