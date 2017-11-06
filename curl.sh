@@ -16,6 +16,16 @@ _cpu="$2"
 (
   cd "${_NAM}" || exit
 
+  # Cross-tasks
+
+  # Detect host OS
+  case "$(uname)" in
+    *_NT*)   os='win';;
+    Linux*)  os='linux';;
+    Darwin*) os='mac';;
+    *BSD)    os='bsd';;
+  esac
+
   # Prepare build
 
   find . -name '*.dll' -type f -delete
@@ -23,7 +33,13 @@ _cpu="$2"
 
   # FIXME: This will not create a fully release-compliant file tree,
   #        f.e. documentation will be incomplete.
-  [ -f 'Makefile' ] || ./buildconf.bat
+  if [ ! -f 'Makefile' ]; then
+    if [ "${os}" = 'win' ]; then
+      ./buildconf.bat
+    else
+      ./buildconf
+    fi
+  fi
 
   # Build
 
