@@ -36,10 +36,11 @@ matrix:
 before_install:
   - |
     if [ "$TRAVIS_OS_NAME" = 'osx' ]; then
-      [ "${CC}" = 'mingw-clang' ] && _clang='llvm'
+      [ "${CC}" = 'mingw-clang' ] && _options="${_options} llvm"
+      [ "${TRAVIS_BRANCH#*dev*}" != "${TRAVIS_BRANCH}" ] && _options="${_options} autoconf automake libtool"
       export HOMEBREW_NO_AUTO_UPDATE=1
       time travis_retry brew update > /dev/null
-      time travis_retry brew install p7zip mingw-w64 ${_clang} jq osslsigncode dos2unix gpg gnu-sed
+      time travis_retry brew install p7zip mingw-w64 ${_options} jq osslsigncode dos2unix gpg gnu-sed
       time travis_retry brew install --force-bottle --build-bottle wine
       time wineboot --init
     elif [ "$TRAVIS_OS_NAME" = 'linux' ]; then
@@ -50,12 +51,13 @@ before_install:
         cat /etc/*-release
         ulimit -a
         df -h
-        [ "${CC}" = 'mingw-clang' ] && _clang='clang'
+        [ "${CC}" = 'mingw-clang' ] && _options="${_options} clang"
+        [ "${TRAVIS_BRANCH#*dev*}" != "${TRAVIS_BRANCH}" ] && _options="${_options} autoconf automake libtool"
         dpkg --add-architecture i386
         apt-get -qq update
         apt-get -qq install \
           curl git make python python-pip \
-          binutils-mingw-w64 gcc-mingw-w64 ${_clang} cmake \
+          binutils-mingw-w64 gcc-mingw-w64 ${_options} cmake \
           p7zip-full time jq dos2unix realpath osslsigncode wine-stable wine64 wine32
         ./_build.sh'
     fi
