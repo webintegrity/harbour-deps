@@ -52,8 +52,8 @@ _cpu="$2"
   cmake . ${options} \
     '-DBROTLIDEC_SHARED_COMPILATION_VERSION=' \
     '-DCMAKE_BROTLIDEC_SHARED_COMPILATION_VERSION=' \
-    "-DCMAKE_C_COMPILER=${_CCPREFIX}gcc" \
-    "-DCMAKE_CXX_COMPILER=${_CCPREFIX}g++" \
+    "-DCMAKE_C_COMPILER=${_CCPREFIX}gcc.exe" \
+    "-DCMAKE_CXX_COMPILER=${_CCPREFIX}g++.exe" \
     "-DCMAKE_C_FLAGS=${_CFLAGS}" \
     '-DCMAKE_INSTALL_PREFIX=/usr/local'
   make
