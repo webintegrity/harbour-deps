@@ -28,6 +28,7 @@ _cpu="$2"
 
   if [ "${os}" = 'win' ]; then
     options='-GMSYS Makefiles'
+    # Without this option, the value '/usr/local' becomes 'msys64/usr/local'
     export MSYS2_ARG_CONV_EXCL='-DCMAKE_INSTALL_PREFIX='
   else
     options='-DCMAKE_SYSTEM_NAME=Windows'
@@ -61,8 +62,6 @@ _cpu="$2"
 
   # DESTDIR= + CMAKE_INSTALL_PREFIX
   _pkg='pkg/usr/local'
-
-  ls -lA -R 'pkg'
 
   # Remove '-static' suffixes from static lib names to make these behave
   # like other most other projects do.
