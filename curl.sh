@@ -16,26 +16,6 @@ _cpu="$2"
 (
   cd "${_NAM}" || exit
 
-  # Cross-tasks
-
-  # Detect host OS
-  case "$(uname)" in
-    *_NT*)   os='win';;
-    Linux*)  os='linux';;
-    Darwin*) os='mac';;
-    *BSD)    os='bsd';;
-  esac
-
-  unset _HOST
-  case "${os}" in
-    win)   _HOST='x86_64-pc-mingw32';;
-    linux) _HOST='x86_64-pc-linux';;
-    mac)   _HOST='x86_64-apple-darwin';;
-    bsd)   _HOST='x86_64-pc-bsd';;
-  esac
-
-  options="--build=${_HOST} --host=${_TRIPLET}"
-
   # Prepare build
 
   find . -name '*.dll' -type f -delete
@@ -47,8 +27,7 @@ _cpu="$2"
     if [ "${os}" = 'win' ]; then
       ./buildconf.bat
     else
-      # shellcheck disable=SC2086
-      ./buildconf ${options}
+      cp -f -p Makefile.dist Makefile
     fi
   fi
 
