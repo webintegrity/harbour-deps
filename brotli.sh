@@ -28,6 +28,7 @@ _cpu="$2"
 
   if [ "${os}" = 'win' ]; then
     options='-GMSYS Makefiles'
+    export MSYS2_ARG_CONV_EXCL='-DCMAKE_INSTALL_PREFIX='
   else
     options='-DCMAKE_SYSTEM_NAME=Windows'
   fi
