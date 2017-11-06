@@ -60,13 +60,12 @@ _cpu="$2"
   export CFLAGS="${LDFLAGS} -fno-ident -U__STRICT_ANSI__ -DNGHTTP2_STATICLIB"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && CFLAGS="${CFLAGS} -fno-asynchronous-unwind-tables"
 
-  if [ "${CC}" = '__mingw-clang' ]; then
+  if [ "${CC}" = 'mingw-clang' ]; then
     export CC=clang
     if [ "${os}" != 'win' ]; then
       CFLAGS="-target ${_TRIPLET} --sysroot ${_SYSROOT} ${CFLAGS}"
       LDFLAGS="-target ${_TRIPLET} --sysroot ${_SYSROOT} ${LDFLAGS}"
       [ "${os}" = 'linux' ] && options="-L$(find "/usr/lib/gcc/${_TRIPLET}" -name '*posix' | head -n 1) ${options}"
-      # CURL_LDFLAG_EXTRAS="-target ${_TRIPLET} --sysroot ${_SYSROOT} ${CURL_LDFLAG_EXTRAS}"
     fi
   else
     export CC="${_CCPREFIX}gcc"

@@ -52,8 +52,9 @@ _cpu="$2"
   # AR=, NM=, RANLIB=
   if [ "${CC}" = 'mingw-clang' ]; then
     export CC=clang
+    options="${options} -fno-integrated-assembler"
     if [ "${os}" != 'win' ]; then
-      options="-target ${_TRIPLET} --sysroot ${_SYSROOT} ${options} -fno-integrated-assembler"
+      options="-target ${_TRIPLET} --sysroot ${_SYSROOT} ${options}"
       [ "${os}" = 'linux' ] && options="-L$(find "/usr/lib/gcc/${_TRIPLET}" -name '*posix' | head -n 1) ${options}"
       # CURL_LDFLAG_EXTRAS="-target ${_TRIPLET} --sysroot ${_SYSROOT} ${CURL_LDFLAG_EXTRAS}"
     fi
