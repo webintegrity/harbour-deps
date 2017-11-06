@@ -48,10 +48,10 @@ _cpu="$2"
 
   unset CC
 
-  _CFLAGS="-static-libgcc -m${_cpu} -fno-ident -DMINGW_HAS_SECURE_API"
+  _CFLAGS="-m${_cpu} -fno-ident -DMINGW_HAS_SECURE_API"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && _CFLAGS="${_CFLAGS} -fno-asynchronous-unwind-tables"
 
-  export CFLAGS="${_CFLAGS}"
+  export CFLAGS="-static-libgcc ${_CFLAGS}"
   export CXXFLAGS="${_CFLAGS}"
 
   # shellcheck disable=SC2086
