@@ -21,7 +21,7 @@ environment:
   CC: mingw-gcc
 build_script:
   - set PATH=C:\Python27-x64;C:\msys64\usr\bin;%SystemRoot%\system32
-  - pacman --noconfirm --noprogressbar -S --needed p7zip mingw-w64-{i686,x86_64}-{jq,osslsigncode}
+  - pacman --noconfirm --noprogressbar -S --needed p7zip mingw-w64-{i686,x86_64}-{cmake,jq,osslsigncode} %_CLANG%
   - sh -c ./_build.sh
 artifacts:
   - path: '*-*-mingw*.*'
