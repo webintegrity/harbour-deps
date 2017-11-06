@@ -50,7 +50,17 @@ _cpu="$2"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && options="${options} -fno-asynchronous-unwind-tables"
 
   # AR=, NM=, RANLIB=
-  unset CC
+  if [ "${CC}" = 'mingw-clang' ]; then
+    export CC=clang
+    options="${options} -fno-integrated-assembler"
+    if [ "${os}" != 'win' ]; then
+      options="-target ${_TRIPLET} --sysroot ${_SYSROOT} ${options}"
+      [ "${os}" = 'linux' ] && options="-L$(find "/usr/lib/gcc/${_TRIPLET}" -name '*posix' | head -n 1) ${options}"
+      # CURL_LDFLAG_EXTRAS="-target ${_TRIPLET} --sysroot ${_SYSROOT} ${CURL_LDFLAG_EXTRAS}"
+    fi
+  else
+    unset CC
+  fi
 
   # shellcheck disable=SC2086
   ./Configure ${options} shared \
