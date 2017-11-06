@@ -27,7 +27,11 @@ _cpu="$2"
   esac
 
   options=''
-  [ "${os}" != 'win' ] && options="${options} -DCMAKE_SYSTEM_NAME=Windows"
+  if [ "${os}" != 'win' ]; then
+    options="${options} -DCMAKE_SYSTEM_NAME=Windows"
+    options="${options} -DCMAKE_C_COMPILER=${_CCPREFIX}gcc"
+    options="${options} -DCMAKE_CXX_COMPILER=${_CCPREFIX}g++"
+  fi
 
   # Build
 
@@ -49,8 +53,6 @@ _cpu="$2"
 
   # shellcheck disable=SC2086
   cmake . ${options} \
-    -DCMAKE_C_COMPILER="${_CCPREFIX}gcc" \
-    -DCMAKE_CXX_COMPILER="${_CCPREFIX}g++" \
     -DCMAKE_C_FLAGS="${_CFLAGS}" \
     -DCMAKE_INSTALL_PREFIX='/usr/local' \
     -DCMAKE_INSTALL_LIBDIR='lib'
