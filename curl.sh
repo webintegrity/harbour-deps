@@ -26,6 +26,16 @@ _cpu="$2"
     *BSD)    os='bsd';;
   esac
 
+  unset _HOST
+  case "${os}" in
+    win)   _HOST='x86_64-pc-mingw32';;
+    linux) _HOST='x86_64-pc-linux';;
+    mac)   _HOST='x86_64-apple-darwin';;
+    bsd)   _HOST='x86_64-pc-bsd';;
+  esac
+
+  options="--build=${_HOST} --host=${_TRIPLET}"
+
   # Prepare build
 
   find . -name '*.dll' -type f -delete
@@ -34,7 +44,8 @@ _cpu="$2"
   # FIXME: This will not create a fully release-compliant file tree,
   #        f.e. documentation will be incomplete.
   if [ ! -f 'Makefile' ]; then
-    ./buildconf
+    # shellcheck disable=SC2086
+    ./buildconf ${options}
   fi
 
   # Build
