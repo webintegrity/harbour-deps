@@ -61,7 +61,7 @@ _cpu="$2"
   # DESTDIR= + CMAKE_INSTALL_PREFIX
   _pkg='pkg/usr/local'
 
-  ls -lA -R "${_pkg}"
+  ls -lA -R 'pkg'
 
   # Remove '-static' suffixes from static lib names to make these behave
   # like other most other projects do.
