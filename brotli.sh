@@ -48,8 +48,8 @@ _cpu="$2"
 
   # shellcheck disable=SC2086
   cmake . ${options} \
-    -DCMAKE_SHARED_LIBRARY_PREFIX= \
-    -DCMAKE_SHARED_LIBRARY_SUFFIX= \
+    '-DCMAKE_SHARED_LIBRARY_PREFIX_C=' \
+    '-DCMAKE_SHARED_LIBRARY_SUFFIX_C=' \
     "-DCMAKE_C_COMPILER=${_CCPREFIX}gcc" \
     "-DCMAKE_CXX_COMPILER=${_CCPREFIX}g++" \
     "-DCMAKE_C_FLAGS=${_CFLAGS}" \
