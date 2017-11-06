@@ -65,7 +65,7 @@ _cpu="$2"
   # Remove '-static' suffixes from static lib names to make these behave
   # like other most other projects do.
 
-  for fn in ${_pkg}/lib/*-static.a; do mv "${fn}" "$(echo "${fn}" | sed 's|-static||')"; done
+# for fn in ${_pkg}/lib/*-static.a; do mv "${fn}" "$(echo "${fn}" | sed 's|-static||')"; done
 
   # Make steps for determinism
 
