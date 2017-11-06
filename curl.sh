@@ -16,36 +16,20 @@ _cpu="$2"
 (
   cd "${_NAM}" || exit
 
-  # Cross-tasks
-
-  # Detect host OS
-  case "$(uname)" in
-    *_NT*)   os='win';;
-    Linux*)  os='linux';;
-    Darwin*) os='mac';;
-    *BSD)    os='bsd';;
-  esac
-
-  unset _HOST
-  case "${os}" in
-    win)   _HOST='x86_64-pc-mingw32';;
-    linux) _HOST='x86_64-pc-linux';;
-    mac)   _HOST='x86_64-apple-darwin';;
-    bsd)   _HOST='x86_64-pc-bsd';;
-  esac
-
-  options="--build=${_HOST} --host=${_TRIPLET}"
-
   # Prepare build
 
   find . -name '*.dll' -type f -delete
   find . -name '*.def' -type f -delete
 
-  # FIXME: This will not create a fully release-compliant file tree,
-  #        f.e. documentation will be incomplete.
   if [ ! -f 'Makefile' ]; then
-    # shellcheck disable=SC2086
-    ./buildconf ${options}
+    if [ "${os}" = 'win' ]; then
+      # FIXME: This will not create a fully release-compliant file tree,
+      #        e.g. documentation will be incomplete.
+      ./buildconf.bat
+    else
+      # FIXME: Replace this with `./buildconf` call
+      cp -f -p Makefile.dist Makefile
+    fi
   fi
 
   # Build
@@ -106,13 +90,8 @@ _cpu="$2"
     export OPENSSL_INCLUDE="${OPENSSL_PATH}/include"
     export OPENSSL_LIBPATH="${OPENSSL_PATH}"
     export OPENSSL_LIBS='-lssl -lcrypto'
-    # This breaks pre-7.55.0 builds
-    if [ "$(echo "${CURL_VER_}" | cut -c -5)" != '7.55.' ]; then
-      options="${options}-winssl"
-    fi
-  else
-    options="${options}-winssl"
   fi
+  options="${options}-winssl"
   if [ -d ../libssh2 ]; then
     options="${options}-ssh2"
     export LIBSSH2_PATH=../../libssh2
