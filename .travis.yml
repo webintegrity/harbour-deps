@@ -48,6 +48,7 @@ before_install:
         --env-file <(env | grep -E '^(TRAVIS_|BINTRAY_|GPG_|VIRUSTOTAL_|CODESIGN_|CC)') \
         "${DOCKER_IMAGE}" sh -c '
         cat /etc/*-release
+        echo
         ulimit -a
         df -h
         [ "${CC}" = 'mingw-clang' ] && _clang='clang'
