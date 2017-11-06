@@ -26,9 +26,17 @@ _cpu="$2"
     *BSD)    os='bsd';;
   esac
 
-  [ "${os}" != 'win' ] && export CMAKE_SYSTEM_NAME=${_TRIPLET}
+  options=''
+  if [ "${os}" != 'win' ]; then
+    options="${options} -DCMAKE_SYSTEM_NAME=Windows"
+    options="${options} -DCMAKE_C_COMPILER=${_CCPREFIX}gcc"
+    options="${options} -DCMAKE_CXX_COMPILER=${_CCPREFIX}g++"
+  fi
 
   # Build
+
+  rm -fr CMakeFiles
+  rm -f CMakeCache.txt
 
   find . -name '*.o'   -type f -delete
   find . -name '*.a'   -type f -delete
@@ -38,18 +46,20 @@ _cpu="$2"
   find . -name '*.Plo' -type f -delete
   find . -name '*.pc'  -type f -delete
 
-  export CMAKE_C_COMPILER="${_CCPREFIX}gcc"
-  export LDFLAGS="-static-libgcc -m${_cpu}"
-  export CFLAGS="${LDFLAGS} -fno-ident"
-  [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && CFLAGS="${CFLAGS} -fno-asynchronous-unwind-tables"
-  export CXXFLAGS="${CFLAGS}"
-
   unset CC
+
+  _CFLAGS="-m${_cpu} -fno-ident -DMINGW_HAS_SECURE_API"
+  [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && _CFLAGS="${_CFLAGS} -fno-asynchronous-unwind-tables"
+
+  export CFLAGS="-static-libgcc ${_CFLAGS}"
+  export CXXFLAGS="${_CFLAGS}"
 
   # shellcheck disable=SC2086
   cmake . ${options} \
-    -DCMAKE_INSTALL_PREFIX=/usr/local \
-    -DCMAKE_INSTALL_LIBDIR=lib
+    -DCMAKE_SHARED_LIBRARY_PREFIX= \
+    -DCMAKE_SHARED_LIBRARY_SUFFIX= \
+    -DCMAKE_INSTALL_PREFIX='/usr/local' \
+    -DCMAKE_INSTALL_LIBDIR='lib'
   make
   make install "DESTDIR=$(pwd)/pkg" > /dev/null
 
