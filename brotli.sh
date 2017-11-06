@@ -49,9 +49,9 @@ _cpu="$2"
   # shellcheck disable=SC2086
   cmake . ${options} \
     '-DCMAKE_SHARED_LIBRARY_PREFIX_C=' \
-    '-BROTLIDEC_VERSION=' \
-    '-brotlienc_VERSION=' \
-    '-brotlicommon_VERSION=' \
+    '-DBROTLIDEC_VERSION=' \
+    '-Dbrotlienc_VERSION=' \
+    '-Dbrotlicommon_VERSION=' \
     "-DCMAKE_C_COMPILER=${_CCPREFIX}gcc" \
     "-DCMAKE_CXX_COMPILER=${_CCPREFIX}g++" \
     "-DCMAKE_C_FLAGS=${_CFLAGS}" \
