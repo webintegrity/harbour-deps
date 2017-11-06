@@ -27,7 +27,7 @@ _cpu="$2"
   esac
 
   if [ "${os}" = 'win' ]; then
-    options="'-GMSYS Makefiles'"
+    options='-GMSYS Makefiles'
   else
     options='-DCMAKE_SYSTEM_NAME=Windows'
   fi
@@ -50,7 +50,7 @@ _cpu="$2"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && _CFLAGS="${_CFLAGS} -fno-asynchronous-unwind-tables"
 
   # shellcheck disable=SC2086
-  cmake . ${options} \
+  cmake . "${options}" \
     "-DCMAKE_C_COMPILER=${_CCPREFIX}gcc" \
     "-DCMAKE_CXX_COMPILER=${_CCPREFIX}g++" \
     "-DCMAKE_C_FLAGS=${_CFLAGS}" \
