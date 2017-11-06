@@ -46,9 +46,10 @@ _cpu="$2"
   _CFLAGS="-static-libgcc -m${_cpu} -fno-ident -DMINGW_HAS_SECURE_API"
   [ "${_BRANCH#*extmingw*}" = "${_BRANCH}" ] && [ "${_cpu}" = '32' ] && _CFLAGS="${_CFLAGS} -fno-asynchronous-unwind-tables"
 
+#    '-DCMAKE_SHARED_LIBRARY_PREFIX_C='
+
   # shellcheck disable=SC2086
   cmake . ${options} \
-    '-DCMAKE_SHARED_LIBRARY_PREFIX_C=' \
     '-DBROTLIDEC_SHARED_COMPILATION_VERSION=' \
     '-DCMAKE_BROTLIDEC_SHARED_COMPILATION_VERSION=' \
     "-DCMAKE_C_COMPILER=${_CCPREFIX}gcc" \
